@@ -46,20 +46,24 @@ extern int yydebug;
   enum yytokentype
   {
     T_Int = 258,
-    T_Print = 259,
-    T_IntConstant = 260,
-    T_StringConstant = 261,
-    T_Identifier = 262,
-    U_neg = 263
+    T_Void = 259,
+    T_Return = 260,
+    T_Print = 261,
+    T_IntConstant = 262,
+    T_StringConstant = 263,
+    T_Identifier = 264,
+    U_neg = 265
   };
 #endif
 /* Tokens.  */
 #define T_Int 258
-#define T_Print 259
-#define T_IntConstant 260
-#define T_StringConstant 261
-#define T_Identifier 262
-#define U_neg 263
+#define T_Void 259
+#define T_Return 260
+#define T_Print 261
+#define T_IntConstant 262
+#define T_StringConstant 263
+#define T_Identifier 264
+#define U_neg 265
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
