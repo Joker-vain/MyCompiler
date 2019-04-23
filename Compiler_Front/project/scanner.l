@@ -10,35 +10,51 @@ void unterminate_string();
 
 /* note \042 is '"' */
 
-OPERATOR        ([-/+*()=,;!<>(){}])
+OPERATOR        ([-/+*%=,;!<>(){}<>])
 INTEGER         ([0-9]+)
 IDENTIFIER      ([_a-zA-Z][_a-zA-Z0-9]*)
 WHITESPACE      ([ \t\r\a]+)
 UNTERM_STRING   (\042[^\042\n]*)
 STRING          (\042[^\042\n]*\042)
+INCLUDE_COMMENT     ("#"[^\n]*)
 
 %%
 "//" {
 	char c = input();
 	while(c!='\n')
 		c=input();
+    cur_line++;
 }
 
 "/*" {
 	char c1 = input();
 	char c2 = input();
 	while(c1!='*' || c2 != '/'){
+        if(c1=='\n')
+            cur_line++;
 		c1 = c2;
 		c2 = input();
 	}
 }
 
-{OPERATOR}      { return yytext[0]; }
-"int"           { return T_Int;     }
-"void"          { return T_Void;    }
-"print"         { return T_Print;   }
-"return"        { return T_Return;  }
-
+{INCLUDE_COMMENT}   {}
+{OPERATOR}          { return yytext[0]; }
+"int"               { return T_Int;     }
+"void"              { return T_Void;    }
+"print"             { return T_Print;   }
+"return"            { return T_Return;  }
+"readint"           { return T_ReadInt; }
+"while"             { return T_While; }
+"if"                { return T_If; }
+"else"              { return T_Else; }
+"break"             { return T_Break; }
+"continue"          { return T_Continue; }
+"<="                { return T_Le; }
+">="                { return T_Ge; }
+"=="                { return T_Eq; }
+"!="                { return T_Ne; }
+"&&"                { return T_And; }
+"||"                { return T_Or; }
 {INTEGER}       { _DUPTEXT; return T_IntConstant; }
 {STRING}        { _DUPTEXT; return T_StringConstant; }
 {IDENTIFIER}    { _DUPTEXT; return T_Identifier; }
