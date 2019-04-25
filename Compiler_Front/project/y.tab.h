@@ -63,7 +63,22 @@ extern int yydebug;
     T_Or = 273,
     T_IntConstant = 274,
     T_StringConstant = 275,
-    T_Identifier = 276
+    T_Identifier = 276,
+    T_MINUS = 277,
+    T_DIV = 278,
+    T_PLUS = 279,
+    T_STAR = 280,
+    T_PER = 281,
+    T_ASSIGNOP = 282,
+    T_COMMA = 283,
+    T_SEMI = 284,
+    T_NOT = 285,
+    T_LC = 286,
+    T_RC = 287,
+    T_LB = 288,
+    T_RB = 289,
+    T_LP = 290,
+    T_RP = 291
   };
 #endif
 /* Tokens.  */
@@ -86,10 +101,35 @@ extern int yydebug;
 #define T_IntConstant 274
 #define T_StringConstant 275
 #define T_Identifier 276
+#define T_MINUS 277
+#define T_DIV 278
+#define T_PLUS 279
+#define T_STAR 280
+#define T_PER 281
+#define T_ASSIGNOP 282
+#define T_COMMA 283
+#define T_SEMI 284
+#define T_NOT 285
+#define T_LC 286
+#define T_RC 287
+#define T_LB 288
+#define T_RB 289
+#define T_LP 290
+#define T_RP 291
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+
+union YYSTYPE
+{
+#line 12 "parser.y" /* yacc.c:1909  */
+
+   struct treeNode* type_treenode;
+
+#line 130 "y.tab.h" /* yacc.c:1909  */
+};
+
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
