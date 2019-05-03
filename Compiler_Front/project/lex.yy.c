@@ -510,9 +510,11 @@ void yyerror(const char *msg);
 void unrecognized_char(char c);
 void unterminate_string();
 #define _DUPTEXT {yylval = strdup(yytext);}
-#line 513 "lex.yy.c"
-/* note \042 is '"' */
+#define YY_USER_ACTION \
+yylloc.first_line = cur_line;
 #line 515 "lex.yy.c"
+/* note \042 is '"' */
+#line 517 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -729,9 +731,9 @@ YY_DECL
 		}
 
 	{
-#line 38 "scanner.l"
+#line 40 "scanner.l"
 
-#line 734 "lex.yy.c"
+#line 736 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -790,7 +792,7 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 39 "scanner.l"
+#line 41 "scanner.l"
 {
 	char c = input();
 	while(c!='\n')
@@ -800,7 +802,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 46 "scanner.l"
+#line 48 "scanner.l"
 {
 	char c1 = input();
 	char c2 = input();
@@ -814,206 +816,206 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 57 "scanner.l"
+#line 59 "scanner.l"
 {}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 58 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,";",NULL);return T_SEMI;}
+#line 60 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,";",NULL);return T_SEMI;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 59 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,",",NULL);return T_COMMA;}
+#line 61 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,",",NULL);return T_COMMA;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 60 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"=",NULL);return T_ASSIGNOP;}
+#line 62 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,"=",NULL);return T_ASSIGNOP;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 61 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"+",NULL);return T_PLUS;}
+#line 63 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,"+",NULL);return T_PLUS;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 62 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"-",NULL);return T_MINUS;}
+#line 64 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,"-",NULL);return T_MINUS;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 63 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"/",NULL);return T_DIV;}
+#line 65 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,"/",NULL);return T_DIV;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 64 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"*",NULL);return T_STAR;}
+#line 66 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,"*",NULL);return T_STAR;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 65 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"(",NULL);return T_LP;}
+#line 67 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,"(",NULL);return T_LP;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 66 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,")",NULL);return T_RP;}
+#line 68 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,")",NULL);return T_RP;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 67 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"%",NULL);return T_PER;}
+#line 69 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,"%",NULL);return T_PER;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 68 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"!",NULL);return T_NOT;}
+#line 70 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,"!",NULL);return T_NOT;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 69 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"{",NULL);return T_LC;}
+#line 71 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,"{",NULL);return T_LC;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 70 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"}",NULL);return T_RC;}
+#line 72 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,"}",NULL);return T_RC;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 71 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"{",NULL);return T_LB;}
+#line 73 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,"<",NULL);return T_LB;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 72 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"}",NULL);return T_RB;}
+#line 74 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,">",NULL);return T_RB;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 73 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"int",NULL);return T_Int;     }
+#line 75 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,"int",NULL);return T_Int;     }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 74 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"void",NULL);return T_Void;    }
+#line 76 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,"void",NULL);return T_Void;    }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 75 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"print",NULL);return T_Print;   }
+#line 77 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,"print",NULL);return T_Print;   }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 76 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"return",NULL);return T_Return;  }
+#line 78 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,"return",NULL);return T_Return;  }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 77 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"readint",NULL);return T_ReadInt; }
+#line 79 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,"readint",NULL);return T_ReadInt; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 78 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"while",NULL);return T_While; }
+#line 80 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,"while",NULL);return T_While; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 79 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"if",NULL);return T_If; }
+#line 81 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,"if",NULL);return T_If; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 80 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"else",NULL);return T_Else; }
+#line 82 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,"else",NULL);return T_Else; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 81 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"break",NULL);return T_Break; }
+#line 83 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,"break",NULL);return T_Break; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 82 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"continue",NULL);return T_Continue; }
+#line 84 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,"continue",NULL);return T_Continue; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 83 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"<=",NULL);return T_Le; }
+#line 85 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,"<=",NULL);return T_Le; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 84 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,">=",NULL);return T_Ge; }
+#line 86 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,">=",NULL);return T_Ge; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 85 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"==",NULL);return T_Eq; }
+#line 87 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,"==",NULL);return T_Eq; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 86 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"!=",NULL);return T_Ne; }
+#line 88 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,"!=",NULL);return T_Ne; }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 87 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"&&",NULL);return T_And; }
+#line 89 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,"&&",NULL);return T_And; }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 88 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"||",NULL);return T_Or; }
+#line 90 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,"||",NULL);return T_Or; }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 89 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"INTEGER",NULL);; return T_IntConstant; }
+#line 91 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,"INTEGER",yytext); return T_IntConstant; }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 90 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"STRING",NULL);; return T_StringConstant; }
+#line 92 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,"STRING",yytext); return T_StringConstant; }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 91 "scanner.l"
-{ createTreeNode(&(yylval.type_treenode),0,"IDENTIFIER",NULL);; return T_Identifier; }
+#line 93 "scanner.l"
+{ createTreeNode(&(yylval.type_treenode),0,cur_line,"IDENTIFIER",yytext); return T_Identifier; }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 92 "scanner.l"
+#line 94 "scanner.l"
 { /* ignore every whitespace */ }
 	YY_BREAK
 case 39:
 /* rule 39 can match eol */
 YY_RULE_SETUP
-#line 93 "scanner.l"
+#line 95 "scanner.l"
 { cur_line++; }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 94 "scanner.l"
+#line 96 "scanner.l"
 { unterminate_string(); }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 95 "scanner.l"
+#line 97 "scanner.l"
 { unrecognized_char(yytext[0]); }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 96 "scanner.l"
+#line 98 "scanner.l"
 ECHO;
 	YY_BREAK
-#line 1016 "lex.yy.c"
+#line 1018 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2018,7 +2020,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 96 "scanner.l"
+#line 98 "scanner.l"
 
 
 int yywrap(void) { 
@@ -2036,6 +2038,5 @@ void unterminate_string() {
 }
 
 void yyerror(const char *msg) {
-    printf("Error at line %d:\n\t%s\n", cur_line, msg);
-    exit(-1);
+    printf("\nError at line %d:\n\t%s\n", cur_line, msg);
 }

@@ -1,0 +1,148 @@
+
+Error at line 19:
+	syntax error
+Error type B at Line 19: Expected type ';'
+
+Error at line 19:
+	syntax error
+Error type B at Line 3: Expected type '}'
+
+Error at line 19:
+	syntax error
+
+
+S
+    Program
+        FuncDecl
+            RetType
+                int
+            FuncName
+                IDENTIFIER-----》main
+            Args
+            BlockContent
+                VarDecls
+                    VarDecl
+                        int
+                        IDENTIFIER-----》i
+                    ;
+                BlockContent
+                    Stmts
+                        Stmt
+                            Stmt
+                                IDENTIFIER-----》i
+                                =
+                                Expr
+                                    INTEGER-----》0
+                    BlockContent
+                        Stmts
+                            Stmt
+                                WhileStmt
+                                    While
+                                        while
+                                    TestExpr
+                                        Expr
+                                            Expr
+                                                IDENTIFIER-----》i
+                                            <
+                                            Expr
+                                                INTEGER-----》10
+                                    StmtsBlock
+                                        BlockContent
+                                            Stmts
+                                                Stmt
+                                                    Stmt
+                                                        IDENTIFIER-----》i
+                                                        =
+                                                        Expr
+                                                            Expr
+                                                                IDENTIFIER-----》i
+                                                            +
+                                                            Expr
+                                                                INTEGER-----》1
+                                            BlockContent
+                                                Stmts
+                                                    Stmt
+                                                        IfStmt
+                                                            If
+                                                                if
+                                                            TestExpr
+                                                                Expr
+                                                                    Expr
+                                                                        Expr
+                                                                            IDENTIFIER-----》i
+                                                                        ==
+                                                                        Expr
+                                                                            INTEGER-----》3
+                                                                    ||
+                                                                    Expr
+                                                                        Expr
+                                                                            IDENTIFIER-----》i
+                                                                        ==
+                                                                        Expr
+                                                                            INTEGER-----》5
+                                                            StmtsBlock
+                                                                BlockContent
+                                                                    Stmts
+                                                                        Stmt
+                                                                            ContinueStmt
+                                                                                continue
+                                                                    BlockContent
+                                                BlockContent
+                                                    Stmts
+                                                        Stmt
+                                                            IfStmt
+                                                                If
+                                                                    if
+                                                                TestExpr
+                                                                    Expr
+                                                                        Expr
+                                                                            IDENTIFIER-----》i
+                                                                        ==
+                                                                        Expr
+                                                                            INTEGER-----》8
+                                                                StmtsBlock
+                                                                    BlockContent
+                                                                        Stmts
+                                                                            Stmt
+                                                                                BreakStmt
+                                                                                    break
+                                                                        BlockContent
+                                                    BlockContent
+                                                        Stmts
+                                                            Stmt
+                                                                PrintStmt
+                                                                    print
+                                                                    STRING-----》"%d! = %d"
+                                                                    PActuals
+                                                                        PActuals
+                                                                            PActuals
+                                                                            Expr
+                                                                                IDENTIFIER-----》i
+                                                                        Expr
+                                                                            CallExpr
+                                                                                IDENTIFIER-----》factor
+                                                                                Actuals
+                                                                                    Expr
+                                                                                        IDENTIFIER-----》i
+                                                                                    PActuals
+                                                        BlockContent
+                                                            Stmts
+                                                                Stmt
+                                                                    ReturnStmt
+                                                                        return
+                                                                        Expr
+                                                                            INTEGER-----》0
+                                                            BlockContent
+                        BlockContent
+                            VarDecls
+                                VarDecl
+                                    int
+                                    IDENTIFIER-----》factor
+                            BlockContent
+
+
+
+ *************************************************************************** 
+
+	there are 2 errors!!! 
+

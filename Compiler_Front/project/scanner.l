@@ -3,10 +3,13 @@
 #include "treeNode.h"
 #include "y.tab.h"
 int cur_line = 1;
+int yycolumn = 1;
 void yyerror(const char *msg);
 void unrecognized_char(char c);
 void unterminate_string();
 #define _DUPTEXT {yylval = strdup(yytext);}
+#define YY_USER_ACTION \
+yylloc.first_line = cur_line;
 %}
 
 /* note \042 is '"' */
@@ -55,42 +58,43 @@ RP              ")"
 }
 
 {INCLUDE_COMMENT}   {}
-{SEMI} 			    { createTreeNode(&(yylval.type_treenode),0,";",NULL);return T_SEMI;}
-{COMMA} 		    { createTreeNode(&(yylval.type_treenode),0,",",NULL);return T_COMMA;}
-{ASSIGNOP} 		    { createTreeNode(&(yylval.type_treenode),0,"=",NULL);return T_ASSIGNOP;}
-{PLUS} 			    { createTreeNode(&(yylval.type_treenode),0,"+",NULL);return T_PLUS;}
-{MINUS} 		    { createTreeNode(&(yylval.type_treenode),0,"-",NULL);return T_MINUS;}
-{DIV} 			    { createTreeNode(&(yylval.type_treenode),0,"/",NULL);return T_DIV;}
-{STAR} 			    { createTreeNode(&(yylval.type_treenode),0,"*",NULL);return T_STAR;}
-{LP} 			    { createTreeNode(&(yylval.type_treenode),0,"(",NULL);return T_LP;}
-{RP} 			    { createTreeNode(&(yylval.type_treenode),0,")",NULL);return T_RP;}
-{PER}               { createTreeNode(&(yylval.type_treenode),0,"%",NULL);return T_PER;}
-{NOT}               { createTreeNode(&(yylval.type_treenode),0,"!",NULL);return T_NOT;}
-{LC}                { createTreeNode(&(yylval.type_treenode),0,"{",NULL);return T_LC;}
-{RC}                { createTreeNode(&(yylval.type_treenode),0,"}",NULL);return T_RC;}
-{LB}                { createTreeNode(&(yylval.type_treenode),0,"{",NULL);return T_LB;}
-{RB}                { createTreeNode(&(yylval.type_treenode),0,"}",NULL);return T_RB;}
-"int"               { createTreeNode(&(yylval.type_treenode),0,"int",NULL);return T_Int;     }
-"void"              { createTreeNode(&(yylval.type_treenode),0,"void",NULL);return T_Void;    }
-"print"             { createTreeNode(&(yylval.type_treenode),0,"print",NULL);return T_Print;   }
-"return"            { createTreeNode(&(yylval.type_treenode),0,"return",NULL);return T_Return;  }
-"readint"           { createTreeNode(&(yylval.type_treenode),0,"readint",NULL);return T_ReadInt; }
-"while"             { createTreeNode(&(yylval.type_treenode),0,"while",NULL);return T_While; }
-"if"                { createTreeNode(&(yylval.type_treenode),0,"if",NULL);return T_If; }
-"else"              { createTreeNode(&(yylval.type_treenode),0,"else",NULL);return T_Else; }
-"break"             { createTreeNode(&(yylval.type_treenode),0,"break",NULL);return T_Break; }
-"continue"          { createTreeNode(&(yylval.type_treenode),0,"continue",NULL);return T_Continue; }
-"<="                { createTreeNode(&(yylval.type_treenode),0,"<=",NULL);return T_Le; }
-">="                { createTreeNode(&(yylval.type_treenode),0,">=",NULL);return T_Ge; }
-"=="                { createTreeNode(&(yylval.type_treenode),0,"==",NULL);return T_Eq; }
-"!="                { createTreeNode(&(yylval.type_treenode),0,"!=",NULL);return T_Ne; }
-"&&"                { createTreeNode(&(yylval.type_treenode),0,"&&",NULL);return T_And; }
-"||"                { createTreeNode(&(yylval.type_treenode),0,"||",NULL);return T_Or; }
-{INTEGER}           { createTreeNode(&(yylval.type_treenode),0,"INTEGER",NULL);; return T_IntConstant; }
-{STRING}            { createTreeNode(&(yylval.type_treenode),0,"STRING",NULL);; return T_StringConstant; }
-{IDENTIFIER}        { createTreeNode(&(yylval.type_treenode),0,"IDENTIFIER",NULL);; return T_Identifier; }
+{SEMI} 			    { createTreeNode(&(yylval.type_treenode),0,cur_line,";",NULL);yycolumn = yycolumn+yyleng;return T_SEMI;}
+{COMMA} 		    { createTreeNode(&(yylval.type_treenode),0,cur_line,",",NULL);yycolumn = yycolumn+yyleng;return T_COMMA;}
+{ASSIGNOP} 		    { createTreeNode(&(yylval.type_treenode),0,cur_line,"=",NULL);yycolumn = yycolumn+yyleng;return T_ASSIGNOP;}
+{PLUS} 			    { createTreeNode(&(yylval.type_treenode),0,cur_line,"+",NULL);yycolumn = yycolumn+yyleng;return T_PLUS;}
+{MINUS} 		    { createTreeNode(&(yylval.type_treenode),0,cur_line,"-",NULL);yycolumn = yycolumn+yyleng;return T_MINUS;}
+{DIV} 			    { createTreeNode(&(yylval.type_treenode),0,cur_line,"/",NULL);yycolumn = yycolumn+yyleng;return T_DIV;}
+{STAR} 			    { createTreeNode(&(yylval.type_treenode),0,cur_line,"*",NULL);yycolumn = yycolumn+yyleng;return T_STAR;}
+{LP} 			    { createTreeNode(&(yylval.type_treenode),0,cur_line,"(",NULL);yycolumn = yycolumn+yyleng;return T_LP;}
+{RP} 			    { createTreeNode(&(yylval.type_treenode),0,cur_line,")",NULL);yycolumn = yycolumn+yyleng;return T_RP;}
+{PER}               { createTreeNode(&(yylval.type_treenode),0,cur_line,"%",NULL);yycolumn = yycolumn+yyleng;return T_PER;}
+{NOT}               { createTreeNode(&(yylval.type_treenode),0,cur_line,"!",NULL);yycolumn = yycolumn+yyleng;return T_NOT;}
+{LC}                { createTreeNode(&(yylval.type_treenode),0,cur_line,"{",NULL);yycolumn = yycolumn+yyleng;return T_LC;}
+{RC}                { createTreeNode(&(yylval.type_treenode),0,cur_line,"}",NULL);yycolumn = yycolumn+yyleng;return T_RC;}
+{LB}                { createTreeNode(&(yylval.type_treenode),0,cur_line,"<",NULL);yycolumn = yycolumn+yyleng;return T_LB;}
+{RB}                { createTreeNode(&(yylval.type_treenode),0,cur_line,">",NULL);yycolumn = yycolumn+yyleng;return T_RB;}
+"int"               { createTreeNode(&(yylval.type_treenode),0,cur_line,"int",NULL);yycolumn = yycolumn+yyleng;return T_Int;     }
+"void"              { createTreeNode(&(yylval.type_treenode),0,cur_line,"void",NULL);yycolumn = yycolumn+yyleng;return T_Void;    }
+"print"             { createTreeNode(&(yylval.type_treenode),0,cur_line,"print",NULL);yycolumn = yycolumn+yyleng;return T_Print;   }
+"return"            { createTreeNode(&(yylval.type_treenode),0,cur_line,"return",NULL);yycolumn = yycolumn+yyleng;return T_Return;  }
+"readint"           { createTreeNode(&(yylval.type_treenode),0,cur_line,"readint",NULL);yycolumn = yycolumn+yyleng;return T_ReadInt; }
+"while"             { createTreeNode(&(yylval.type_treenode),0,cur_line,"while",NULL);yycolumn = yycolumn+yyleng;return T_While; }
+"if"                { createTreeNode(&(yylval.type_treenode),0,cur_line,"if",NULL);yycolumn = yycolumn+yyleng;return T_If; }
+"else"              { createTreeNode(&(yylval.type_treenode),0,cur_line,"else",NULL);yycolumn = yycolumn+yyleng;return T_Else; }
+"break"             { createTreeNode(&(yylval.type_treenode),0,cur_line,"break",NULL);yycolumn = yycolumn+yyleng;return T_Break; }
+"continue"          { createTreeNode(&(yylval.type_treenode),0,cur_line,"continue",NULL);yycolumn = yycolumn+yyleng;return T_Continue; }
+"<="                { createTreeNode(&(yylval.type_treenode),0,cur_line,"<=",NULL);yycolumn = yycolumn+yyleng;return T_Le; }
+">="                { createTreeNode(&(yylval.type_treenode),0,cur_line,">=",NULL);yycolumn = yycolumn+yyleng;return T_Ge; }
+"=="                { createTreeNode(&(yylval.type_treenode),0,cur_line,"==",NULL);yycolumn = yycolumn+yyleng;return T_Eq; }
+"!="                { createTreeNode(&(yylval.type_treenode),0,cur_line,"!=",NULL);yycolumn = yycolumn+yyleng;return T_Ne; }
+"&&"                { createTreeNode(&(yylval.type_treenode),0,cur_line,"&&",NULL);yycolumn = yycolumn+yyleng;return T_And; }
+"||"                { createTreeNode(&(yylval.type_treenode),0,cur_line,"||",NULL);yycolumn = yycolumn+yyleng;return T_Or; }
+{INTEGER}           { createTreeNode(&(yylval.type_treenode),0,cur_line,"INTEGER",yytext); yycolumn = yycolumn+yyleng;return T_IntConstant; }
+{STRING}            { createTreeNode(&(yylval.type_treenode),0,cur_line,"STRING",yytext); yycolumn = yycolumn+yyleng;return T_StringConstant; }
+{IDENTIFIER}        { createTreeNode(&(yylval.type_treenode),0,cur_line,"IDENTIFIER",yytext); yycolumn = yycolumn+yyleng;return T_Identifier; }
 {WHITESPACE}        { /* ignore every whitespace */ }
-[\r\n]              { cur_line++; }
+[\r\n]              { cur_line++;yycolumn = 0; }
+[\t]                {yycolumn = yycolumn+yyleng;}
 {UNTERM_STRING}     { unterminate_string(); }
 .                   { unrecognized_char(yytext[0]); }
 %%
@@ -110,6 +114,5 @@ void unterminate_string() {
 }
 
 void yyerror(const char *msg) {
-    printf("Error at line %d:\n\t%s\n", cur_line, msg);
-    exit(-1);
+    printf("\nError at line %d:\n\t%s\n", cur_line, msg);
 }

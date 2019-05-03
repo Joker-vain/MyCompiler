@@ -1,0 +1,19 @@
+2019/5/2
+bison的reduce/reduce的冲突错误，通常是first集合有重合
+shift/reduce冲突错误通常是自身的调用死循环了
+
+错误处理：
+简单的语法分析器错误恢复：伪记号error确定了错误恢复点，通常在第一个错误后，抑制后续的分析错误消息，直到成功在一行内移进三个记号
+bison发生错误的时候会调用yyerror函数会默认的退出分析器不再执行 所以需要使用yyerrok表示已经从错误中恢复
+
+位置：
+ typedef struct YYTYPE 
+{
+	int  first_line;
+	int  first_colum;
+	int last_line;
+	int last_colum;
+}YYLTYPE
+bison的位置特性可以由行号和列号确定，在语法分析器中可以用@$.first_line 之类调用，但是需要在词法分析器中用yylloc.first_line = cur_line;将其赋值起来。如：
+#define YY_USER_ACTION \
+yylloc.first_line = cur_line;
