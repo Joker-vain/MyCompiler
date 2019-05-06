@@ -11,8 +11,10 @@ typedef struct treeNode
     struct treeNode* children[7];  
 } treeNode;
 
-struct treeNode* root;
+struct treeNode* root;  
 
 void createTreeNode(treeNode** p,int t,int l,char* n,char* text);
 
 void printTreeNode(treeNode* r,int depth);
+
+void printTree(treeNode* p,int blank);

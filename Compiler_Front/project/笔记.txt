@@ -17,3 +17,4 @@ bison发生错误的时候会调用yyerror函数会默认的退出分析器不再执行 所以需要使用yyerr
 bison的位置特性可以由行号和列号确定，在语法分析器中可以用@$.first_line 之类调用，但是需要在词法分析器中用yylloc.first_line = cur_line;将其赋值起来。如：
 #define YY_USER_ACTION \
 yylloc.first_line = cur_line;
+

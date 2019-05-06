@@ -1,4 +1,4 @@
-// 第四个版本
+// 第五个版本
 %{
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,19 +14,19 @@ extern int cur_line;
    struct treeNode* type_treenode;
 }
 
-%token <type_treenode> T_Int T_Void T_Return T_Print T_ReadInt T_While
-%token <type_treenode> T_If T_Else T_Break T_Continue T_Le T_Ge T_Eq T_Ne
+%token <type_treenode> T_Type T_Return T_Print T_ReadInt T_While T_SelfPLUS T_SelfMINUS
+%token <type_treenode> T_If T_Else T_Break T_Continue T_Le T_Ge T_Eq T_Ne T_LM T_RM
 %token <type_treenode> T_And T_Or T_IntConstant T_StringConstant T_Identifier
 %token <type_treenode> T_MINUS T_DIV T_PLUS T_STAR T_PER T_ASSIGNOP T_COMMA T_SEMI T_NOT
-%token <type_treenode> T_LC T_RC T_LB T_RB T_LP T_RP
+%token <type_treenode> T_LC T_RC T_LB T_RB T_LP T_RP T_FloatConstant T_For
 
 %type <type_treenode> S Program FuncDecl RetType FuncName Args _Args VarDecls VarDecl
 %type <type_treenode> Stmts Stmt AssignStmt PrintStmt PActuals CallStmt CallExpr
 %type <type_treenode> Actuals ReturnStmt IfStmt If TestExpr   BreakStmt
-%type <type_treenode> StmtsBlock Else  WhileStmt While ContinueStmt
-%type <type_treenode> Expr ReadInt BlockContent
+%type <type_treenode> StmtsBlock Else  WhileStmt While ContinueStmt ArrayStmt
+%type <type_treenode> Expr ReadInt BlockContent ForStmt For ForExpr AssignStmts
 
-%left   T_ASSIGNOP
+%left   T_ASSIGNOP 
 %left   T_Or
 %left   T_And
 %left   T_Eq T_Ne
@@ -34,6 +34,8 @@ extern int cur_line;
 %left   T_PLUS T_MINUS
 %left   T_STAR T_DIV T_PER
 %right  T_NOT
+
+%left   T_SelfMINUS T_SelfPLUS
 
 %%
 
@@ -65,7 +67,7 @@ FuncDecl:
                             {yyerrok;yyerrornum = yyerrornum + 1;printf("Error type B at line %d: Expected type '('\n",@$.first_line);createTreeNode(&$$,1,@$.first_line,"FuncDecl",NULL);$$->children[0] = $1;$$->children[1] = $2;}
 |   RetType FuncName T_LP Args error  T_LC BlockContent T_RC 
                             {yyerrok;yyerrornum = yyerrornum + 1;printf("Error type B at Line %d: Expected type ')'\n",@$.first_line);createTreeNode(&$$,1,@$.first_line,"FuncDecl",NULL);$$->children[0] = $1;$$->children[1] = $2;$$->children[2] = $4;}
-|   RetType FuncName T_LP Args T_RP error  BlockContent T_RC 
+|   RetType FuncName T_LP Args T_RP  error  BlockContent T_RC 
                             {yyerrok;yyerrornum = yyerrornum + 1;printf("Error type B at Line %d: Expected type '{'\n",@$.first_line);createTreeNode(&$$,1,@$.first_line,"FuncDecl",NULL);$$->children[0] = $1;$$->children[1] = $2;$$->children[2] = $4;}   
 |   RetType FuncName T_LP Args T_RP T_LC BlockContent error 
                             {yyerrok;yyerrornum = yyerrornum + 1;printf("Error type B at Line %d: Expected type '}'\n",@$.first_line);createTreeNode(&$$,1,@$.first_line,"FuncDecl",NULL);$$->children[0] = $1;$$->children[1] = $2;$$->children[2] = $4;$$->children[3] = $7;}                                                           
@@ -73,13 +75,13 @@ FuncDecl:
 
 //返回类型
 RetType:
-    T_Int                   {createTreeNode(&$$,1,@$.first_line,"RetType",NULL);$$->children[0] = $1;}
-|   T_Void                  {createTreeNode(&$$,1,@$.first_line,"RetType",NULL);$$->children[0] = $1;}
+    T_Type                   {createTreeNode(&$$,1,@$.first_line,"RetType",NULL);$$->children[0] = $1;}
 ;
 //函数名称
 FuncName:
     T_Identifier            {createTreeNode(&$$,1,@$.first_line,"FuncName",NULL);$$->children[0] = $1;}
 ;
+
 //参数定义
 Args:
     /*empty*/               {createTreeNode(&$$,1,@$.first_line,"Args",NULL);}
@@ -87,8 +89,8 @@ Args:
 ;
 
 _Args:
-    T_Int T_Identifier      {createTreeNode(&$$,1,@$.first_line,"_Args",NULL);$$->children[0] = $1;$$->children[1] = $2;}
-|   _Args T_COMMA T_Int T_Identifier    
+    T_Type T_Identifier      {createTreeNode(&$$,1,@$.first_line,"_Args",NULL);$$->children[0] = $1;$$->children[1] = $2;}
+|   _Args T_COMMA T_Type T_Identifier    
                             {createTreeNode(&$$,1,@$.first_line,"_Args",NULL);$$->children[0] = $1;$$->children[1] = $3;$$->children[2] = $4;}
 ;
 
@@ -102,12 +104,14 @@ BlockContent:
 //变量申明
 VarDecls:
     VarDecl T_SEMI  {createTreeNode(&$$,1,@$.first_line,"VarDecls",NULL);$$->children[0] = $1;$$->children[1] = $2;}
-|   VarDecl error   {createTreeNode(&$$,1,@$.first_line,"VarDecls",NULL);$$->children[0] = $1;yyerrornum = yyerrornum + 1;printf("Error type B at Line %d: Expected type ';'\n",@$.first_line);yyerrok;}    
+|   VarDecl error T_SEMI  {createTreeNode(&$$,1,@$.first_line,"VarDecls",NULL);$$->children[0] = $1;yyerrornum = yyerrornum + 1;printf("Error type B at Line %d: Expected type ';'\n",@$.first_line);yyerrok;}    
 ;
 
 VarDecl:
-    T_Int T_Identifier          
+    T_Type T_Identifier          
                             { createTreeNode(&$$,1,@$.first_line,"VarDecl",NULL);$$->children[0] = $1;$$->children[1] = $2; }
+|   T_Type  ArrayStmt       
+                            { createTreeNode(&$$,1,@$.first_line,"VarDecl",NULL);$$->children[0] = $1;$$->children[1] = $2;}    
 |   VarDecl T_COMMA T_Identifier    
                             { createTreeNode(&$$,1,@$.first_line,"VarDecl",NULL);$$->children[0] = $1;$$->children[1] = $3; }
 ;
@@ -118,7 +122,7 @@ Stmts:
 ;
 
 Stmt:
-    AssignStmt              {createTreeNode(&$$,1,@$.first_line,"Stmt",NULL);$$->children[0] = $1; }
+    AssignStmts              {createTreeNode(&$$,1,@$.first_line,"Stmt",NULL);$$->children[0] = $1; }
 |   PrintStmt               {createTreeNode(&$$,1,@$.first_line,"Stmt",NULL);$$->children[0] = $1; }
 |   CallStmt                {createTreeNode(&$$,1,@$.first_line,"Stmt",NULL);$$->children[0] = $1; }
 |   ReturnStmt              {createTreeNode(&$$,1,@$.first_line,"Stmt",NULL);$$->children[0] = $1; }
@@ -126,12 +130,21 @@ Stmt:
 |   WhileStmt               {createTreeNode(&$$,1,@$.first_line,"Stmt",NULL);$$->children[0] = $1; }
 |   BreakStmt               {createTreeNode(&$$,1,@$.first_line,"Stmt",NULL);$$->children[0] = $1; }
 |   ContinueStmt            {createTreeNode(&$$,1,@$.first_line,"Stmt",NULL);$$->children[0] = $1; }
+|   ForStmt                 {createTreeNode(&$$,1,@$.first_line,"Stmt",NULL);$$->children[0] = $1;}
+
+;
+
+AssignStmts:
+    AssignStmt  T_SEMI     
+                            {createTreeNode(&$$,1,@$.first_line,"AssignStmts",NULL);$$->children[0] = $1;}
 ;
 
 AssignStmt:
-    T_Identifier T_ASSIGNOP Expr  T_SEMI     
-                            {createTreeNode(&$$,1,@$.first_line,"Stmt",NULL);$$->children[0] = $1;$$->children[1] = $2;$$->children[2] = $3;}
-;
+    T_Identifier T_ASSIGNOP Expr
+                            {createTreeNode(&$$,1,@$.first_line,"AssignStmt",NULL);$$->children[0] = $1;$$->children[1] = $2;$$->children[2] = $3;}
+|   ArrayStmt T_ASSIGNOP Expr
+                            {createTreeNode(&$$,1,@$.first_line,"AssignStmt",NULL);$$->children[0] = $1;$$->children[1] = $2;$$->children[2] = $3;}
+;                    
 
 PrintStmt:
     T_Print T_LP T_StringConstant PActuals T_RP T_SEMI
@@ -188,19 +201,38 @@ Else:
 //while循环语句 
 WhileStmt:
     While TestExpr StmtsBlock
-                            {createTreeNode(&$$,1,@$.first_line,"WhileStmt",NULL);$$->children[0] = $1;$$->children[1] = $2;$$->children[2] = $3;}
+                                { createTreeNode(&$$,1,@$.first_line,"WhileStmt",NULL);$$->children[0] = $1;$$->children[1] = $2;$$->children[2] = $3;}
 ;
 While:
-    T_While                 { createTreeNode(&$$,1,@$.first_line,"While",NULL);$$->children[0] = $1; }
+    T_While                     { createTreeNode(&$$,1,@$.first_line,"While",NULL);$$->children[0] = $1; }
 ;
 
 BreakStmt:
-    T_Break T_SEMI             { createTreeNode(&$$,1,@$.first_line,"BreakStmt",NULL);$$->children[0] = $1; }
+    T_Break T_SEMI              { createTreeNode(&$$,1,@$.first_line,"BreakStmt",NULL);$$->children[0] = $1; }
 ;
 ContinueStmt:
-    T_Continue T_SEMI          { createTreeNode(&$$,1,@$.first_line,"ContinueStmt",NULL);$$->children[0] = $1; }
+    T_Continue T_SEMI           { createTreeNode(&$$,1,@$.first_line,"ContinueStmt",NULL);$$->children[0] = $1; }
 ;
 
+//for循环
+ForStmt:
+    For ForExpr StmtsBlock      { createTreeNode(&$$,1,@$.first_line,"ForStmt",NULL);$$->children[0] = $1;$$->children[1] = $2;$$->children[2] = $3; }
+;
+
+For:
+    T_For                       { createTreeNode(&$$,1,@$.first_line,"For",NULL);$$->children[0] = $1; }
+;
+
+ForExpr:
+    T_LP AssignStmt T_SEMI  Expr T_SEMI Expr  T_RP
+                                { createTreeNode(&$$,1,@$.first_line,"ForExpr",NULL);$$->children[0] = $2;$$->children[1] = $4;$$->children[2] = $6;  } 
+;
+
+//数组表达式
+ArrayStmt:
+    T_Identifier T_LM Expr T_RM 
+                                {createTreeNode(&$$,1,@$.first_line,"ArrayStmt",NULL);$$->children[0] = $1; $$->children[1] = $3;}                         
+;
 
 Expr:
     Expr T_PLUS Expr            { createTreeNode(&$$,1,@$.first_line,"Expr",NULL);$$->children[0] = $1;$$->children[1] = $2;$$->children[2] = $3; }
@@ -218,10 +250,14 @@ Expr:
 |   Expr T_And Expr             { createTreeNode(&$$,1,@$.first_line,"Expr",NULL);$$->children[0] = $1;$$->children[1] = $2;$$->children[2] = $3; }
 |   T_NOT Expr                  { createTreeNode(&$$,1,@$.first_line,"Expr",NULL);$$->children[0] = $1;$$->children[1] = $2; }
 |   T_IntConstant               { createTreeNode(&$$,1,@$.first_line,"Expr",NULL);$$->children[0] = $1; }
+|   T_FloatConstant             { createTreeNode(&$$,1,@$.first_line,"Expr",NULL);$$->children[0] = $1; }
 |   T_Identifier                { createTreeNode(&$$,1,@$.first_line,"Expr",NULL);$$->children[0] = $1;  }
 |   ReadInt                     { /* empty */ }
 |   CallExpr                    { createTreeNode(&$$,1,@$.first_line,"Expr",NULL);$$->children[0] = $1;  }
 |   T_LP Expr T_RP              { createTreeNode(&$$,1,@$.first_line,"Expr",NULL);$$->children[0] = $2;  }
+|   Expr T_SelfPLUS             { createTreeNode(&$$,1,@$.first_line,"Expr",NULL);$$->children[0] = $1;$$->children[1] = $2;}
+|   Expr T_SelfMINUS            { createTreeNode(&$$,1,@$.first_line,"Expr",NULL);$$->children[0] = $1;$$->children[1] = $2;}
+|   ArrayStmt                   { createTreeNode(&$$,1,@$.first_line,"Expr",NULL);$$->children[0] = $1;}
 ;
 
 ReadInt:
@@ -235,7 +271,7 @@ ReadInt:
 int main(){
     yyparse();
     printf("\n\n");
-    printTreeNode(root, 0);
+    printTreeNode(root,0);
     printf("\n\n\n *************************************************************************** \n");
     if(yyerrornum>0){
         printf("\n\tthere are %d errors!!! \n\n",yyerrornum);

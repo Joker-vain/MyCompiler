@@ -1,2 +1,132 @@
-Error at line 3:
-	syntax error
+
+Error at line 3:  {
+	 syntax error
+Error type B at Line 3: Expected type ')'
+
+
+S
+    Program
+        Program
+            FuncDecl
+                RetType
+                    type-----》int
+                FuncName
+                    IDENTIFIER-----》main
+                Args
+        FuncDecl
+            RetType
+                type-----》int
+            FuncName
+                IDENTIFIER-----》factor
+            Args
+                _Args
+                    type-----》int
+                    IDENTIFIER-----》n
+            BlockContent
+                Stmts
+                    Stmt
+                        IfStmt
+                            If
+                                if
+                            TestExpr
+                                Expr
+                                    Expr
+                                        IDENTIFIER-----》n
+                                    <
+                                    Expr
+                                        INTEGER-----》2
+                            StmtsBlock
+                                BlockContent
+                                    Stmts
+                                        Stmt
+                                            ReturnStmt
+                                                return
+                                                Expr
+                                                    INTEGER-----》1
+                                    BlockContent
+                BlockContent
+                    VarDecls
+                        VarDecl
+                            type-----》int
+                            IDENTIFIER-----》i
+                        ;
+                    BlockContent
+                        VarDecls
+                            VarDecl
+                                type-----》int
+                                IDENTIFIER-----》sum
+                            ;
+                        BlockContent
+                            Stmts
+                                Stmt
+                                    AssignStmts
+                                        AssignStmt
+                                            IDENTIFIER-----》sum
+                                            =
+                                            Expr
+                                                INTEGER-----》0
+                            BlockContent
+                                Stmts
+                                    Stmt
+                                        ForStmt
+                                            For
+                                                for
+                                            ForExpr
+                                                AssignStmt
+                                                    IDENTIFIER-----》i
+                                                    =
+                                                    Expr
+                                                        INTEGER-----》0
+                                                Expr
+                                                    Expr
+                                                        IDENTIFIER-----》i
+                                                    <
+                                                    Expr
+                                                        INTEGER-----》10
+                                                Expr
+                                                    Expr
+                                                        IDENTIFIER-----》i
+                                                    ++
+                                            StmtsBlock
+                                                BlockContent
+                                                    Stmts
+                                                        Stmt
+                                                            AssignStmts
+                                                                AssignStmt
+                                                                    IDENTIFIER-----》sum
+                                                                    =
+                                                                    Expr
+                                                                        Expr
+                                                                            IDENTIFIER-----》sum
+                                                                        +
+                                                                        Expr
+                                                                            IDENTIFIER-----》i
+                                                    BlockContent
+                                BlockContent
+                                    Stmts
+                                        Stmt
+                                            ReturnStmt
+                                                return
+                                                Expr
+                                                    Expr
+                                                        IDENTIFIER-----》n
+                                                    *
+                                                    Expr
+                                                        CallExpr
+                                                            IDENTIFIER-----》factor
+                                                            Actuals
+                                                                Expr
+                                                                    Expr
+                                                                        IDENTIFIER-----》n
+                                                                    -
+                                                                    Expr
+                                                                        INTEGER-----》1
+                                                                PActuals
+                                    BlockContent
+
+
+
+ *************************************************************************** 
+
+	there are 1 errors!!! 
+

@@ -45,77 +45,87 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    T_Int = 258,
-    T_Void = 259,
-    T_Return = 260,
-    T_Print = 261,
-    T_ReadInt = 262,
-    T_While = 263,
-    T_If = 264,
-    T_Else = 265,
-    T_Break = 266,
-    T_Continue = 267,
-    T_Le = 268,
-    T_Ge = 269,
-    T_Eq = 270,
-    T_Ne = 271,
-    T_And = 272,
-    T_Or = 273,
-    T_IntConstant = 274,
-    T_StringConstant = 275,
-    T_Identifier = 276,
-    T_MINUS = 277,
-    T_DIV = 278,
-    T_PLUS = 279,
-    T_STAR = 280,
-    T_PER = 281,
-    T_ASSIGNOP = 282,
-    T_COMMA = 283,
-    T_SEMI = 284,
-    T_NOT = 285,
-    T_LC = 286,
-    T_RC = 287,
-    T_LB = 288,
-    T_RB = 289,
-    T_LP = 290,
-    T_RP = 291
+    T_Type = 258,
+    T_Return = 259,
+    T_Print = 260,
+    T_ReadInt = 261,
+    T_While = 262,
+    T_SelfPLUS = 263,
+    T_SelfMINUS = 264,
+    T_If = 265,
+    T_Else = 266,
+    T_Break = 267,
+    T_Continue = 268,
+    T_Le = 269,
+    T_Ge = 270,
+    T_Eq = 271,
+    T_Ne = 272,
+    T_LM = 273,
+    T_RM = 274,
+    T_And = 275,
+    T_Or = 276,
+    T_IntConstant = 277,
+    T_StringConstant = 278,
+    T_Identifier = 279,
+    T_MINUS = 280,
+    T_DIV = 281,
+    T_PLUS = 282,
+    T_STAR = 283,
+    T_PER = 284,
+    T_ASSIGNOP = 285,
+    T_COMMA = 286,
+    T_SEMI = 287,
+    T_NOT = 288,
+    T_LC = 289,
+    T_RC = 290,
+    T_LB = 291,
+    T_RB = 292,
+    T_LP = 293,
+    T_RP = 294,
+    T_FloatConstant = 295,
+    T_For = 296
   };
 #endif
 /* Tokens.  */
-#define T_Int 258
-#define T_Void 259
-#define T_Return 260
-#define T_Print 261
-#define T_ReadInt 262
-#define T_While 263
-#define T_If 264
-#define T_Else 265
-#define T_Break 266
-#define T_Continue 267
-#define T_Le 268
-#define T_Ge 269
-#define T_Eq 270
-#define T_Ne 271
-#define T_And 272
-#define T_Or 273
-#define T_IntConstant 274
-#define T_StringConstant 275
-#define T_Identifier 276
-#define T_MINUS 277
-#define T_DIV 278
-#define T_PLUS 279
-#define T_STAR 280
-#define T_PER 281
-#define T_ASSIGNOP 282
-#define T_COMMA 283
-#define T_SEMI 284
-#define T_NOT 285
-#define T_LC 286
-#define T_RC 287
-#define T_LB 288
-#define T_RB 289
-#define T_LP 290
-#define T_RP 291
+#define T_Type 258
+#define T_Return 259
+#define T_Print 260
+#define T_ReadInt 261
+#define T_While 262
+#define T_SelfPLUS 263
+#define T_SelfMINUS 264
+#define T_If 265
+#define T_Else 266
+#define T_Break 267
+#define T_Continue 268
+#define T_Le 269
+#define T_Ge 270
+#define T_Eq 271
+#define T_Ne 272
+#define T_LM 273
+#define T_RM 274
+#define T_And 275
+#define T_Or 276
+#define T_IntConstant 277
+#define T_StringConstant 278
+#define T_Identifier 279
+#define T_MINUS 280
+#define T_DIV 281
+#define T_PLUS 282
+#define T_STAR 283
+#define T_PER 284
+#define T_ASSIGNOP 285
+#define T_COMMA 286
+#define T_SEMI 287
+#define T_NOT 288
+#define T_LC 289
+#define T_RC 290
+#define T_LB 291
+#define T_RB 292
+#define T_LP 293
+#define T_RP 294
+#define T_FloatConstant 295
+#define T_For 296
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -126,7 +136,7 @@ union YYSTYPE
 
    struct treeNode* type_treenode;
 
-#line 130 "y.tab.h" /* yacc.c:1909  */
+#line 140 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

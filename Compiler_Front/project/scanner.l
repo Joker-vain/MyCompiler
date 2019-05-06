@@ -21,6 +21,7 @@ WHITESPACE          ([ \t\r\a]+)
 UNTERM_STRING       (\042[^\042\n]*)
 STRING              (\042[^\042\n]*\042)
 INCLUDE_COMMENT     ("#"[^\n]*)
+FLOAT               ([0-9]*\.[0-9]+)|([0-9]+\.)
 
 MINUS           "-"
 DIV             "/"
@@ -37,6 +38,10 @@ LB              "<"
 RB              ">"
 LP              "("
 RP              ")"
+LM              "["
+RM              "]"
+selfPLUS        "++"
+selfMINUS       "--"
 
 %%
 "//" {
@@ -73,12 +78,17 @@ RP              ")"
 {RC}                { createTreeNode(&(yylval.type_treenode),0,cur_line,"}",NULL);yycolumn = yycolumn+yyleng;return T_RC;}
 {LB}                { createTreeNode(&(yylval.type_treenode),0,cur_line,"<",NULL);yycolumn = yycolumn+yyleng;return T_LB;}
 {RB}                { createTreeNode(&(yylval.type_treenode),0,cur_line,">",NULL);yycolumn = yycolumn+yyleng;return T_RB;}
-"int"               { createTreeNode(&(yylval.type_treenode),0,cur_line,"int",NULL);yycolumn = yycolumn+yyleng;return T_Int;     }
-"void"              { createTreeNode(&(yylval.type_treenode),0,cur_line,"void",NULL);yycolumn = yycolumn+yyleng;return T_Void;    }
+{LM}                { createTreeNode(&(yylval.type_treenode),0,cur_line,"[",NULL);yycolumn = yycolumn+yyleng;return T_LM;}
+{RM}                { createTreeNode(&(yylval.type_treenode),0,cur_line,"]",NULL);yycolumn = yycolumn+yyleng;return T_RM;}
+
+"int"               { createTreeNode(&(yylval.type_treenode),0,cur_line,"type",yytext);yycolumn = yycolumn+yyleng;return T_Type;     }
+"float"             { createTreeNode(&(yylval.type_treenode),0,cur_line,"type",yytext);yycolumn = yycolumn+yyleng;return T_Type;}
+"void"              { createTreeNode(&(yylval.type_treenode),0,cur_line,"type",yytext);yycolumn = yycolumn+yyleng;return T_Type;    }
 "print"             { createTreeNode(&(yylval.type_treenode),0,cur_line,"print",NULL);yycolumn = yycolumn+yyleng;return T_Print;   }
 "return"            { createTreeNode(&(yylval.type_treenode),0,cur_line,"return",NULL);yycolumn = yycolumn+yyleng;return T_Return;  }
 "readint"           { createTreeNode(&(yylval.type_treenode),0,cur_line,"readint",NULL);yycolumn = yycolumn+yyleng;return T_ReadInt; }
 "while"             { createTreeNode(&(yylval.type_treenode),0,cur_line,"while",NULL);yycolumn = yycolumn+yyleng;return T_While; }
+"for"               { createTreeNode(&(yylval.type_treenode),0,cur_line,"for",NULL);yycolumn = yycolumn+yyleng;return T_For;}
 "if"                { createTreeNode(&(yylval.type_treenode),0,cur_line,"if",NULL);yycolumn = yycolumn+yyleng;return T_If; }
 "else"              { createTreeNode(&(yylval.type_treenode),0,cur_line,"else",NULL);yycolumn = yycolumn+yyleng;return T_Else; }
 "break"             { createTreeNode(&(yylval.type_treenode),0,cur_line,"break",NULL);yycolumn = yycolumn+yyleng;return T_Break; }
@@ -89,12 +99,15 @@ RP              ")"
 "!="                { createTreeNode(&(yylval.type_treenode),0,cur_line,"!=",NULL);yycolumn = yycolumn+yyleng;return T_Ne; }
 "&&"                { createTreeNode(&(yylval.type_treenode),0,cur_line,"&&",NULL);yycolumn = yycolumn+yyleng;return T_And; }
 "||"                { createTreeNode(&(yylval.type_treenode),0,cur_line,"||",NULL);yycolumn = yycolumn+yyleng;return T_Or; }
+"++"                { createTreeNode(&(yylval.type_treenode),0,cur_line,"++",NULL);yycolumn = yycolumn+yyleng;return T_SelfPLUS;}
+"--"                { createTreeNode(&(yylval.type_treenode),0,cur_line,"--",NULL);yycolumn = yycolumn+yyleng;return T_SelfMINUS;}
 {INTEGER}           { createTreeNode(&(yylval.type_treenode),0,cur_line,"INTEGER",yytext); yycolumn = yycolumn+yyleng;return T_IntConstant; }
+{FLOAT}             {createTreeNode(&(yylval.type_treenode),0,cur_line,"FLOAT",yytext); yycolumn = yycolumn+yyleng;return T_FloatConstant;}
 {STRING}            { createTreeNode(&(yylval.type_treenode),0,cur_line,"STRING",yytext); yycolumn = yycolumn+yyleng;return T_StringConstant; }
 {IDENTIFIER}        { createTreeNode(&(yylval.type_treenode),0,cur_line,"IDENTIFIER",yytext); yycolumn = yycolumn+yyleng;return T_Identifier; }
 {WHITESPACE}        { /* ignore every whitespace */ }
 [\r\n]              { cur_line++;yycolumn = 0; }
-[\t]                {yycolumn = yycolumn+yyleng;}
+
 {UNTERM_STRING}     { unterminate_string(); }
 .                   { unrecognized_char(yytext[0]); }
 %%
@@ -114,5 +127,5 @@ void unterminate_string() {
 }
 
 void yyerror(const char *msg) {
-    printf("\nError at line %d:\n\t%s\n", cur_line, msg);
+    printf("\nError at line %d:  %s\n\t %s\n", cur_line, yytext,msg);
 }
